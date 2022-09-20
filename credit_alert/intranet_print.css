@@ -1,0 +1,13 @@
+﻿@media print
+{
+	.DoNotPrint
+	{
+	    DISPLAY: none;
+	    VISIBILITY: hidden
+	}
+	.DoPrint
+	{
+	    DISPLAY: inline;
+	    VISIBILITY: vivisble
+	}
+}
