@@ -67,6 +67,7 @@ public partial class home : System.Web.UI.Page
             bool CriteriaSearch = false;
 
             string ad_account = HttpContext.Current.Request.ServerVariables["AUTH_USER"];
+            ad_account = "ric.carrasquilla";
             UserAccess UA = new UserAccess();
 
             UA = UserAccess.LoadUserAccess(ad_account);
@@ -119,8 +120,6 @@ public partial class home : System.Web.UI.Page
 
             }
 
-
-
             if (UA.Access_Alert_Log == false)
             {
                 btnLog.Visible = false;
@@ -158,10 +157,6 @@ public partial class home : System.Web.UI.Page
             {
                 tbToDate.Text = DateTime.Now.ToShortDateString();
             }
-
-
-
-
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             SearchCriteria sc = new SearchCriteria();
@@ -211,24 +206,6 @@ public partial class home : System.Web.UI.Page
                     icheckalerts += 1;
                 }
             }
-            //if (icheckalerts == 0)
-            //{
-            //    cblAlertType.Items[0].Selected = true;
-            //    cblAlertType.Items[1].Selected = true;
-            //    cblAlertType.Items[2].Selected = true;
-            //    sc.AlertTypes = "'Credit', 'Tech', 'RIS'";
-            //}
-
-            //DataTable dtSearchResults = new DataTable();
-            //if (CriteriaSearch)
-            //{
-            //    dtSearchResults = SearchForAlerts(sc);
-            //}
-            //else
-            //{
-            //    dtSearchResults = SearchForAlerts();
-            //}
-            //DataTable dtSearchResults = SearchForAlerts(sc);
             DataTable dtSearchResults = SearchForAlerts();
 
             if (dtSearchResults.Rows.Count > 0)
@@ -282,37 +259,6 @@ public partial class home : System.Web.UI.Page
                                 break;
                             }
                     }
-
-                    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    //~~  Is order Warehouse - Exclude
-                    ////if (dr["SHOWROW"].ToString() == "1")
-                    ////{
-                    ////    DataTable drTransCount = Data.IsThisOrderTransfer(dr["OHORNU"].ToString());
-                    ////    if (int.Parse(drTransCount.Rows[0]["TransCount"].ToString()) > 0)
-                    ////    {
-                    ////        dr["SHOWROW"] = "0";
-                    ////    }
-                    ////}
-
-                    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    //~~  Do order contain any neg lines - Exclude
-                    ////if (dr["SHOWROW"].ToString() == "1")
-                    ////{
-                    ////    bool AllPositiveLines = true;
-                    ////    DataTable drOrderLineQty = Data.OrderDetails_Quantity(dr["OHORNU"].ToString());
-                    ////    foreach (DataRow drLineQty in drOrderLineQty.Rows)
-                    ////    {
-                    ////        int qty = int.Parse(drLineQty["ODQTOR"].ToString());
-                    ////        if (qty < 0)
-                    ////        {
-                    ////            AllPositiveLines = false;
-                    ////        }
-                    ////    }
-                    ////    if (AllPositiveLines == false)
-                    ////    {
-                    ////        dr["SHOWROW"] = "0";
-                    ////    }
-                    ////}
 
                     string onumlink = "http://" + webserver + "/apps/order_invoice_lookup/order.asp?OrderID=" + dr["OrderNumber"].ToString().Trim();
                     string clink = "http://" + webserver + "/apps/company_info/customer_info.asp?CustomerCode=" + dr["OHCSCD"].ToString().Trim();
@@ -405,7 +351,6 @@ public partial class home : System.Web.UI.Page
 
 
                     string approvallink = ApproveLink(dr["OHORNU"].ToString().Trim(), dr["Alert Type"].ToString().Trim(), dr["Alert Description"].ToString().Trim(), dr["CMCSNM"].ToString().Trim(), compcode, dr["OHODT8_2"].ToString().Trim().ToLower(), CR, T, RIS);
-                    //approvallink = ApproveLink(drNewCredit["OHORNU"].ToString().Trim(), drNewCredit["Alert Type"].ToString().Trim(), drNewCredit["Alert Description"].ToString().Trim(), drNewCredit["CMCSNM"].ToString().Trim(), compcode, drNewCredit["OHODT8_2"].ToString().Trim().ToLower());
                     dr["Action"] = "<a href='" + approvallink + "' ><span style='color:blue'>Approve</span></a> | <a href='" + declinelink + "' ><span style='color:blue'>Decline</span></a>";
 
                     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -415,14 +360,11 @@ public partial class home : System.Web.UI.Page
                     dview.RowFilter = "SHOWROW = '1'";
 
                     lblCount.Text = "Alert Count: " + dview.Count.ToString();
-                    // lblCount.Text = "Alert Count: " + dtSearchResults.Rows.Count.ToString();
-                    //lblLastUpdate.Text = "List Last Updated: " + DateTime.Now.ToString();
                     lblLastUpdate.Text = "List Last Updated: " + DateTime.Now.ToString();
 
                     dgCreditTechAlert.DataSource = dview;
                     dgCreditTechAlert.DataBind();
-
-                    // refreshTag.Content = "90; url=home.aspx?fd=" + tbFromDate.Text.ToString().Trim() + "&td=" + tbToDate.Text.ToString().Trim();          
+       
                     refreshTag.Content = "180; url=home.aspx?" + CreateMetaTagRefreshString();
 
                 }
@@ -513,15 +455,6 @@ public partial class home : System.Web.UI.Page
                 icheckalerts += 1;
             }
         }
-        //if (icheckalerts == 0)
-        //{
-        //    cblAlertType.Items[0].Selected = true;
-        //    cblAlertType.Items[1].Selected = true;
-        //    cblAlertType.Items[2].Selected = true;
-        //    sc.AlertTypes = "'Credit', 'Tech', 'RIS'";
-        //}
-
-     
 
         DataTable dtSearchResults = SearchForAlerts(sc);
 
@@ -699,7 +632,6 @@ public partial class home : System.Web.UI.Page
 
 
                 string approvallink = ApproveLink(dr["OHORNU"].ToString().Trim(), dr["Alert Type"].ToString().Trim(), dr["Alert Description"].ToString().Trim(), dr["CMCSNM"].ToString().Trim(), compcode, dr["OHODT8_2"].ToString().Trim().ToLower(), CR, T, RIS);
-                //approvallink = ApproveLink(drNewCredit["OHORNU"].ToString().Trim(), drNewCredit["Alert Type"].ToString().Trim(), drNewCredit["Alert Description"].ToString().Trim(), drNewCredit["CMCSNM"].ToString().Trim(), compcode, drNewCredit["OHODT8_2"].ToString().Trim().ToLower());
                 dr["Action"] = "<a href='" + approvallink + "' ><span style='color:blue'>Approve</span></a> | <a href='" + declinelink + "' ><span style='color:blue'>Decline</span></a>";
 
                 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -709,14 +641,11 @@ public partial class home : System.Web.UI.Page
                 dview.RowFilter = "SHOWROW = '1'";
 
                 lblCount.Text = "Alert Count: " + dview.Count.ToString();
-                // lblCount.Text = "Alert Count: " + dtSearchResults.Rows.Count.ToString();
-                //lblLastUpdate.Text = "List Last Updated: " + DateTime.Now.ToString();
                 lblLastUpdate.Text = "List Last Updated: " + DateTime.Now.ToString();
 
                 dgCreditTechAlert.DataSource = dview;
                 dgCreditTechAlert.DataBind();
-
-                // refreshTag.Content = "90; url=home.aspx?fd=" + tbFromDate.Text.ToString().Trim() + "&td=" + tbToDate.Text.ToString().Trim();          
+          
                 refreshTag.Content = "180; url=home.aspx?" + CreateMetaTagRefreshString();
 
             }
@@ -727,11 +656,7 @@ public partial class home : System.Web.UI.Page
             pnlSearchResults.Visible = false;
             pnlAlerts.Visible = false;
         }
-    }
-
-
-       
-    
+    }    
     public string CreateMetaTagRefreshString()
     {
         string QueryString = "";
@@ -785,59 +710,6 @@ public partial class home : System.Web.UI.Page
         conn4.Dispose();
         return CGCODE;
     }
-    // static public DataTable SearchCC(SearchCriteria sc)
-    // {
-    //string whereclause = "";
-    //string sql = "SELECT ";
-    //sql += "CreditCardTransactionID, CreditCardTransactionType, CreditCardTransactionDatePosted, CreditCardTransactionOrderNumber, ISNULL(CreditCardTransactionOrderNumber, 999999) AS OrderNumberSort, ";
-    //sql += "CreditCardTransactionCardID, CreditCardTransactionAmount, CreditCardTransactionDateProcessed, ISNULL(CreditCardTransactionDateProcessed, '9999-12-31') AS DateProcessedSort, CreditCardTransactionResponseCode, ";
-    //sql += "CreditCardTransactionUserCode, CreditCardTransactionReceiptType, CreditCardTransactionNote, CreditCardNumberEnc, CreditCardTypeName, CreditCardResponseCodeName, CreditCardReasonCodeName, ";
-    //sql += "LTRIM(RTRIM(UMNAME)) AS ProcessedByName, LTRIM(RTRIM(ISNULL(CMCSCD, ''))) AS AccountCode, LTRIM(RTRIM(CMPOST)) AS PostToCode, LTRIM(RTRIM(CMRFCD)) AS ReferenceCode, LTRIM(RTRIM(CMCSNM)) AS CompanyName, CMCRCD ";
-    //sql += "FROM CreditCardTransactions ";
-    //sql += "LEFT JOIN CreditCardResponseCodes ON CreditCardTransactionResponseCode = CreditCardResponseCodeID ";
-    //sql += "LEFT JOIN CreditCardReasonCodes ON CreditCardTransactionReasonCode = CreditCardReasonCodeID ";
-    //sql += "LEFT JOIN CreditCards ON CreditCardTransactionCardID = CreditCardID ";
-    //sql += "LEFT JOIN CreditCardTypes ON CreditCardType = CreditCardTypeID ";
-    //sql += "LEFT JOIN USERMST ON CreditCardtransactionUserCode = UMUSCD ";
-    //sql += "LEFT JOIN ORDRHDR ON CreditCardtransactionOrderNumber = OHORNU ";
-    //sql += "LEFT JOIN CUSTMST ON ISNULL(OHCSCD, CreditCardAccountCode) = CMCSCD ";
-    //sql += "WHERE CMCRCD <> 'A' and CMCRCD <> 'B' and CMCRCD <> 'U' and CreditCardTransactionResponseCode IN (" + sc.ResponseCode + ") ";
-    //sql += "AND CreditCardType IN (" + sc.CardType + ") ";
-    //if (sc.FromDate != "")
-    //{
-    //    sql += "AND CreditCardTransactionDatePosted >= '" + sc.FromDate + "' ";
-    //}
-    //if (sc.ToDate != "")
-    //{
-    //    sql += "AND CreditCardTransactionDatePosted < '" + sc.ToDate + "' ";
-    //}
-    //if (sc.SearchText != "")
-    //{
-    //    whereclause = "";
-    //    if (sc.CheckNumber)
-    //        whereclause += "OR CreditCardNumberEnc LIKE '" + sc.StrEndsWith + sc.SearchText.ToString().Trim() + sc.StrBeginsWith + "' ";
-    //    if (sc.CheckNote)
-    //        whereclause += "OR CreditCardTransactionNote LIKE '" + sc.StrEndsWith + sc.SearchText.ToString().Trim() + sc.StrBeginsWith + "' ";
-    //    if (sc.CheckReceiptDestination)
-    //        whereclause += "OR CreditCardTransactionReceiptDestination LIKE '" + sc.StrEndsWith + sc.SearchText.ToString().Trim() + sc.StrBeginsWith + "' ";
-    //    if (sc.CheckCompanyName)
-    //        whereclause += "OR LTRIM(RTRIM(CMCSNM)) LIKE '" + sc.StrEndsWith + sc.SearchText.ToString().Trim() + sc.StrBeginsWith + "' ";
-    //    if (sc.CheckAccountCode)
-    //        whereclause += "OR LTRIM(RTRIM(CMCSCD)) LIKE '" + sc.StrEndsWith + sc.SearchText.ToString().Trim() + sc.StrBeginsWith + "' ";
-    //    if (sc.CheckPostToCode)
-    //        whereclause += "OR LTRIM(RTRIM(CMPOST)) LIKE '" + sc.StrEndsWith + sc.SearchText.ToString().Trim() + sc.StrBeginsWith + "' ";
-    //    if (sc.CheckReferenceCode)
-    //        whereclause += "OR LTRIM(RTRIM(CMRFCD)) LIKE '" + sc.StrEndsWith + sc.SearchText.ToString().Trim() + sc.StrBeginsWith + "' ";
-    //    if (whereclause != "")
-    //        sql += "AND ( " + whereclause.Remove(0, 3) + ") ";
-    //}
-
-    //sql += "ORDER BY OrderNumberSort,DateProcessedSort DESC";
-    //sql += "";
-
-    //DataTable dt = SQL_Execute_DataTable(sql);
-    //return dt;
-    //}
     static public string ConvertDate(string date)
     {
         string ohodt8 = "";
@@ -860,7 +732,7 @@ public partial class home : System.Web.UI.Page
         sql += "where (OHODT8 >= '" + from + "') and (OHODT8 <= '" + to + "')  ";
 
         sql += "and ([Alert Type] IN (" + sc.AlertTypes.ToString() + ")) ";
-        
+
         if (sc.SearchText != "")
         {
             whereclause = "";
@@ -875,26 +747,13 @@ public partial class home : System.Web.UI.Page
                 sql += "AND ( " + whereclause.Remove(0, 3) + ") ";
         }
 
-       // sql += "and not exists (select 1 from Alert_Action_Log l where vw.OHORNU = l.ordernumber and vw.[Alert Type] = l.alert_type) ";
-
-
         sql += "ORDER BY OHoDT8 DESC, OHORNU DESC ";
-
-
-
-
         DataTable dt = SQL_Execute_DataTable(sql);
         return dt;
     }
     static public DataTable SearchForAlerts()
     {
-        // string sql = "SELECT * FROM vw_CreditAndTechAlert as vw where (OHORNU NOT IN (SELECT ordernumber FROM Alert_Action_Log AS al)) ORDER BY OHoDT8 DESC, OHORNU ";
-
-        //string sql = "SELECT * FROM vw_CreditAndTechAlert as vw WHERE NOT EXISTS (SELECT 1 FROM Alert_Action_Log aal where (vw.OHORNU = aal.ordernumber) and (vw.[Alert Type] = aal.alert_type)) and (OHODT8 >= '20130701') ORDER BY OHoDT8 DESC, OHORNU DESC";
         string sql = "SELECT * FROM vw_CreditAndTechAlert ORDER BY OHoDT8 DESC, OHORNU DESC";
-
-
-
         DataTable dt = SQL_Execute_DataTable(sql);
         return dt;
     }
