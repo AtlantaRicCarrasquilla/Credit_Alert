@@ -16,6 +16,11 @@ using System.Drawing;
 public partial class alert_approve : System.Web.UI.Page
 {
     protected string ENV = "";
+    //public string ad_account = HttpContext.Current.Request.ServerVariables["AUTH_USER"];
+    //public string ad_acct = HttpContext.Current.Request.ServerVariables["AUTH_USER"].ToString();
+    public string ad_account = "ric_carrasquilla";
+    public string ad_acct = "ric_carrasquilla";
+    public string name = "Ric Carrasquilla";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -33,7 +38,6 @@ public partial class alert_approve : System.Web.UI.Page
                     pnlEnvironment.Visible = false;
                 }
             }
-            string ad_account = HttpContext.Current.Request.ServerVariables["AUTH_USER"];
             UserAccess UA = new UserAccess();
 
             UA = UserAccess.LoadUserAccess(ad_account);
@@ -252,9 +256,8 @@ public partial class alert_approve : System.Web.UI.Page
                 btnApprove.Enabled = false;
             }
 
-            string ad_acct = HttpContext.Current.Request.ServerVariables["AUTH_USER"].ToString();
-            string[] split_ad_acct = ad_acct.Split('\\');
-            string name = split_ad_acct[1].Replace('_', ' ');
+            //string[] split_ad_acct = ad_acct.Split('\\');
+            //string name = split_ad_acct[1].Replace('_', ' ');
             tbNotes.Text = "Approved - By " + name + " - " + DateTime.Now.ToString().Trim();
 
             pnlInfo.Visible = true;
@@ -265,7 +268,7 @@ public partial class alert_approve : System.Web.UI.Page
 
     protected void btnOtherCredit_Click(object sender, EventArgs e)
     {
-        string ad_acct = HttpContext.Current.Request.ServerVariables["AUTH_USER"].ToString();
+        //string ad_acct = HttpContext.Current.Request.ServerVariables["AUTH_USER"].ToString();
         string onum = lblOrdNum.Text;
         string dateposted = lblDatePosted.Text;
         string compname = lblCompName.Text;
@@ -343,7 +346,7 @@ public partial class alert_approve : System.Web.UI.Page
         string alerttype = Request.QueryString["alert_type"].ToString();
         string alertdesc = tbAlert.Text;
         string notes = tbNotes.Text;        
-        string ad_acct = HttpContext.Current.Request.ServerVariables["AUTH_USER"].ToString();
+        //string ad_acct = HttpContext.Current.Request.ServerVariables["AUTH_USER"].ToString();
         string action = "approve";
         string action_datetime = DateTime.Now.ToString();
         string PrintOrder = System.Configuration.ConfigurationManager.AppSettings["Print_Orders"];

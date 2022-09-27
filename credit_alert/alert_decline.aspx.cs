@@ -7,6 +7,9 @@ using System.Web.UI.WebControls;
 public partial class alert_decline : System.Web.UI.Page
 {
     protected string ENV = "";
+    public string ad_account = "ric_carrasquilla";
+    public string ad_acct = "ric_carrasquilla";
+    public string name = "Ric Carrasquilla";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -36,9 +39,9 @@ public partial class alert_decline : System.Web.UI.Page
 
         tbAlert.Text = alert;
 
-        string ad_acct = HttpContext.Current.Request.ServerVariables["AUTH_USER"].ToString();
-        string[] split_ad_acct = ad_acct.Split('\\');
-        string name = split_ad_acct[1].Replace('_', ' ');
+        //string ad_acct = HttpContext.Current.Request.ServerVariables["AUTH_USER"].ToString();
+        //string[] split_ad_acct = ad_acct.Split('\\');
+        //string name = split_ad_acct[1].Replace('_', ' ');
         tbNotes.Text = "Declined - By " + name + " - " + DateTime.Now.ToString().Trim();
 
         pnlInfo.Visible = true;
@@ -68,7 +71,6 @@ public partial class alert_decline : System.Web.UI.Page
         string alerttype = Request.QueryString["alert_type"].ToString();
         string alertdesc = tbAlert.Text;
         string notes = tbNotes.Text;
-        string ad_acct = HttpContext.Current.Request.ServerVariables["AUTH_USER"].ToString();
         string action = "Decline";
         string action_datetime = DateTime.Now.ToString();
         string UpdateOrderToVoid = System.Configuration.ConfigurationManager.AppSettings["UpdateOrderToVoid"];
